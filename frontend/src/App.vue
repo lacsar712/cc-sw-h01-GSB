@@ -49,8 +49,6 @@ function logout() {
   <div class="app-root">
     <header v-if="token" class="topbar">
       <div class="brand">光谱波长校准台</div>
-      <!-- h01-trap-bar -->
-      <span class="nav-hint">整理中 · trap:h01</span>
       <nav class="nav">
         <router-link to="/" :class="{ active: isHome }">校准总览</router-link>
         <span class="nav-sep">|</span>
@@ -171,5 +169,23 @@ function logout() {
 }
 .err {
   color: #b00020;
+}
+.verdict-chip {
+  display: inline-block;
+  min-width: 44px;
+  padding: 2px 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #fff;
+}
+.chip-pass {
+  background: #1e8e3e;
+}
+.chip-fail {
+  background: #b00020;
+}
+.chip-wait {
+  background: #9aa0a6;
 }
 </style>

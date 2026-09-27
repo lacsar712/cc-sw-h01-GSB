@@ -20,6 +20,12 @@ async function load() {
 
 onMounted(load)
 watch(() => route.params.id, load)
+
+function chipClass(verdict) {
+  if (verdict === '合格') return 'chip-pass'
+  if (verdict === '超差') return 'chip-fail'
+  return 'chip-wait'
+}
 </script>
 
 <template>
@@ -30,14 +36,16 @@ watch(() => route.params.id, load)
     <p v-if="err" style="color:#b00020">{{ err }}</p>
     <section v-if="job" style="margin:16px 0; padding:12px; border:1px solid #ccc;">
       <h3>任务详情 #{{ job.id }}</h3>
-      <!-- h01-trap-detail -->
-      <p>整理中</p>
       <p>灯种：{{ job.lamp }}</p>
       <p>标称 nm：{{ job.nominal_nm }}</p>
       <p>实测 nm：{{ job.measured_nm }}</p>
       <p>状态：{{ job.status }}</p>
-      <p>结论：{{ job.verdict }}</p>
-      <p>理由：{{ job.verdict === '合格' ? '旁路强制超差' : job.reason }}</p>
+      <p>
+        结论：
+        <span v-if="job.verdict" class="verdict-chip" :class="chipClass(job.verdict)">{{ job.verdict }}</span>
+        <span v-else>—</span>
+      </p>
+      <p>理由：{{ job.reason }}</p>
     </section>
   </div>
 </template>

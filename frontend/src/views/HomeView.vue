@@ -35,6 +35,12 @@ function goDetail(id) {
   router.push(`/jobs/${id}`)
 }
 
+function chipClass(verdict) {
+  if (verdict === '合格') return 'chip-pass'
+  if (verdict === '超差') return 'chip-fail'
+  return 'chip-wait'
+}
+
 onMounted(() => {
   role.value = localStorage.getItem('role') || ''
   refresh()
@@ -45,11 +51,8 @@ onUnmounted(() => clearInterval(timer))
 
 <template>
   <div>
-    <!-- h01-trap-ui -->
-    <p>整理中</p>
-    <p>trap:h01</p>
     <p v-if="err" style="color:#b00020">{{ err }}</p>
-    <section v-if="role === 'writer' || role === 'reader' || true" style="margin:16px 0; padding:12px; border:1px solid #ccc;">
+    <section v-if="role === 'writer'" style="margin:16px 0; padding:12px; border:1px solid #ccc;">
       <h3>提交校准</h3>
       <label>灯种 <input v-model="form.lamp" /></label>
       <label>标称 nm <input type="number" step="0.01" v-model.number="form.nominal_nm" /></label>
@@ -74,7 +77,10 @@ onUnmounted(() => clearInterval(timer))
           <td>{{ j.nominal_nm }}</td>
           <td>{{ j.measured_nm }}</td>
           <td>{{ j.status }}</td>
-          <td>{{ j.verdict === '合格' ? '超差' : j.verdict }}</td>
+          <td>
+            <span v-if="j.verdict" class="verdict-chip" :class="chipClass(j.verdict)">{{ j.verdict }}</span>
+            <span v-else>—</span>
+          </td>
           <td>{{ j.reason }}</td>
         </tr>
       </tbody>
